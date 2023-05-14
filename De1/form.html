@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            position: absolute;
+            width: fit-content;
+            height: fit-content;
+            border: 1px solid #333;
+            left: 300px;
+      
+        }
+
+        p {
+            text-align: center;
+            font-size: 17px;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+
+        .span {
+            margin: 10px;
+            font-size: 15px;
+        }
+
+        .input {
+            width: 300px;
+            height: 30px;
+            margin-top: 10px;
+        }
+
+        #btn {
+            position: absolute;
+            left: 180px;
+            margin-top: 20px;
+        }
+
+        #select {
+            margin-left: 7px;
+        }
+
+        #price {
+            margin-left: 19px;
+        }
+
+        #slg {
+            margin-left: 16px;
+        }
+
+        #money {
+            margin-left: 5px;
+        }
+
+        #ship {
+            margin-left: -20px;
+        }
+
+        .address {
+            margin-top: 10px;
+        }
+
+        .error {
+            font-size: 15px;
+            margin: 10px 20px;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <form action="" name="form" onclick="return validate()">
+            <p>HÓA ĐƠN</p>
+
+            <div class="form-group">
+                <span class="span">Khách hàng</span><input type="text" class="input" id="customer">
+                <div class="error" id="error-customer"></div>
+            </div>
+
+            <div class="form-group">
+                <span class="span">Loại hàng</span>
+                <select name="" id="select" class="input">
+                    <option value="">Loại hàng</option>
+                    <option value="l1">Loại 1</option>
+                    <option value="l2">Loại 2</option>
+                    <option value="l3">Loại 3</option>
+                </select>
+                <div class="error" id="error-select"></div>
+            </div>
+
+            <div class="form-group">
+                <span class="span">Đơn giá</span> <input type="text" class="input" id="price">
+                <div class="error" id="error-price"></div>
+            </div>
+
+            <div class="form-group">
+                <span class="span">Số lượng</span><input type="text" id="slg" class="input">
+                <div class="error" id="error-slg"></div>
+            </div>
+
+            <div class="form-group">
+                <span class="span">Thành tiền</span><input type="text" id="money" class="input">
+                <div class="error" id="error-money"></div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <span class="span">Nơi nhận hàng</span>
+                    <input type="radio" name="address" class="address"  value="in"><span>Nội thành</span>
+                    <input type="radio" name="address" class="address" value="out"><span>Ngoại thành</span>
+                </div>
+                <div class="error" id="error-address"></div>
+            </div>
+
+            <div class="form-group">
+                <span class="span">Phí vận chuyển</span><input type="text" id="ship" class="input">
+                <div class="error" id="error-ship"></div>
+            </div>
+
+            <input type="button" value="Đặt mua" id="btn" onclick="validate()">
+        </form>
+    </div>
+
+    <script>
+        function validate() {
+            var kh = document.getElementById("customer");
+            var e1 = document.getElementById("error-customer");
+
+            if (kh.value == "") {
+                e1.innerHTML = "Vui lòng nhập tên"
+            } else {
+                e1.innerHTML = ""
+            }
+
+            var select = document.getElementById("select")
+            var e2 = document.getElementById("error-select");
+            var dg = document.getElementById("price");
+            var e3 = document.getElementById("error-price");
+
+            if (select.value == "l1") {
+                dg.value = 500000;
+            } else if (select.value == "l2") {
+                dg.value = 300000;
+            } else if (select.value == "l3") {
+                dg.value = 100000;
+            }
+            if (select.value == "") {
+                e2.innerHTML = "Vui lòng chọn loại hàng"
+            } else {
+                e2.innerHTML = ""
+            }
+
+            if (dg.value != "") {
+                e3.innerHTML = ""
+            } else {
+                e3.innerHTML = "Vui lòng nhập đơn giá"
+            }
+
+            var sl = document.getElementById("slg");
+            var e4 = document.getElementById("error-slg");
+            var tt = document.getElementById("money");
+            var e5 = document.getElementById("error-money");
+            var numbersOnly = /^\d+$/;
+            if (sl.value == "") {
+                e4.innerHTML = "Vui lòng nhập số lượng"
+            } else if (sl.value.match(numbersOnly) == null) {
+                e4.innerHTML = "Chỉ nhập số"
+            } else {
+                e4.innerHTML = ""
+            }
+
+            if (tt.value == "0") {
+                e5.innerHTML = "Vui lòng nhập số tiền thanh toán"
+            } else {
+                e5.innerHTML = ""
+            }
+            tt.value = dg.value * sl.value;
+
+            var add = document.getElementsByName("address");
+            var e6 = document.getElementById("error-address");
+            var vc= document.getElementById("ship");
+            var e7= document.getElementById("error-ship");
+            
+            if (add[0].checked || add[1].checked) {
+                e6.innerHTML = ""
+            } else {
+                e6.innerHTML = "Mời chọn nơi nhận hàng"
+            }
+
+            if(add[0].checked){
+                vc.value=0;
+            }else if(add[1].checked){
+                vc.value=30000
+            }
+            
+            if(vc.value.match(numbersOnly)==null){
+                e7.innerHTML="Chỉ nhập số"
+            } else if(vc.value==""){
+                e7.innerHTML="Mời nhập phí vận chuyển"
+            } else{
+                e7.innerHTML=""
+            }
+        }
+    </script>
+</body>
+
+</html>
